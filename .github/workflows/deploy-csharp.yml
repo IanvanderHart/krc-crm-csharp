@@ -44,13 +44,14 @@ jobs:
           debug: true
           timeout: 120s
 
-      - name: Restart service
+      - name: Fix permissions and restart service
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            sudo chown -R csharp:csharp /home/csharp/app/MeterApi
             sudo systemctl restart meterapi
             sleep 2
             sudo systemctl status meterapi --no-pager
