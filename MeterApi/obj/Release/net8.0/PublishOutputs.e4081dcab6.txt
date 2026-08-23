@@ -1,0 +1,16 @@
+/home/csharp/app/MeterApi/MeterApi
+/home/csharp/app/MeterApi/appsettings.Development.json
+/home/csharp/app/MeterApi/appsettings.json
+/home/csharp/app/MeterApi/MeterApi.dll
+/home/csharp/app/MeterApi/MeterApi.runtimeconfig.json
+/home/csharp/app/MeterApi/MeterApi.pdb
+/home/csharp/app/MeterApi/Microsoft.EntityFrameworkCore.dll
+/home/csharp/app/MeterApi/Microsoft.EntityFrameworkCore.Abstractions.dll
+/home/csharp/app/MeterApi/Microsoft.EntityFrameworkCore.Relational.dll
+/home/csharp/app/MeterApi/Microsoft.OpenApi.dll
+/home/csharp/app/MeterApi/Npgsql.dll
+/home/csharp/app/MeterApi/Npgsql.EntityFrameworkCore.PostgreSQL.dll
+/home/csharp/app/MeterApi/Swashbuckle.AspNetCore.Swagger.dll
+/home/csharp/app/MeterApi/Swashbuckle.AspNetCore.SwaggerGen.dll
+/home/csharp/app/MeterApi/Swashbuckle.AspNetCore.SwaggerUI.dll
+/home/csharp/app/MeterApi/MeterApi.deps.json
