@@ -3,8 +3,6 @@ name: Deploy C# API
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'MeterApi/**'
 
 jobs:
   deploy:

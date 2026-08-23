@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using MeterApi.Data;
-//hello,new comment
+//hello,new comment,else
+
+//trigger comment
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
