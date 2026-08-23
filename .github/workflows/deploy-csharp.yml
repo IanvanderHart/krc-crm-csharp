@@ -31,15 +31,18 @@ jobs:
           cd MeterApi
           dotnet publish -c Release -o ./publish --no-restore
 
+      - name: List publish folder (debug)
+        run: ls -la MeterApi/publish/
+
       - name: Deploy via SCP
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "MeterApi/publish/*"
+          source: "MeterApi/publish/"
           target: "/home/csharp/app/MeterApi"
-          strip_components: 2
+          strip_components: 1
           overwrite: true
           debug: true
           timeout: 120s
