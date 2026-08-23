@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MeterApi.Data;
-
+//hello,new comment
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
