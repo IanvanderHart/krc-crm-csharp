@@ -18,6 +18,9 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
+      - name: Clear NuGet cache
+        run: dotnet nuget locals all --clear
+
       - name: Restore dependencies
         run: |
           cd MeterApi
@@ -53,4 +56,3 @@ jobs:
             sudo systemctl status meterapi --no-pager
           request_pty: true
           debug: true
-
