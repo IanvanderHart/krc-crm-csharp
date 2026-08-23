@@ -1,0 +1,51 @@
+name: Deploy C# API
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'MeterApi/**'
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Publish
+        run: |
+          cd MeterApi
+          dotnet publish -c Release -o ./publish
+
+      - name: Deploy via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "MeterApi/publish/*"
+          target: "/home/csharp/app/MeterApi"
+          strip_components: 2
+          overwrite: true
+          debug: true
+          timeout: 120s
+
+      - name: Restart service
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            sudo systemctl restart meterapi
+            sleep 2
+            sudo systemctl status meterapi --no-pager
+          request_pty: true
+          debug: true
+
