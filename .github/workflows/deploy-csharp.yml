@@ -31,6 +31,18 @@ jobs:
           cd MeterApi
           dotnet publish -c Release -o ./publish --no-restore
 
+      - name: Prepare target directory on server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            sudo mkdir -p /home/csharp/app/MeterApi
+            sudo chown -R bro:bro /home/csharp/app/MeterApi
+          request_pty: true
+          debug: true
+
       - name: Deploy via SCP
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -44,13 +56,14 @@ jobs:
           debug: true
           timeout: 120s
 
-      - name: Restart service
+      - name: Fix permissions and restart service
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            sudo chown -R csharp:csharp /home/csharp/app/MeterApi
             sudo systemctl restart meterapi
             sleep 2
             sudo systemctl status meterapi --no-pager
