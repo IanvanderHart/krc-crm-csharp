@@ -16,8 +16,10 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Clear NuGet cache
-        run: dotnet nuget locals all --clear
+      - name: Set HOME for NuGet
+        run: |
+          echo "HOME=/home/csharprunner" >> $GITHUB_ENV
+          echo "DOTNET_CLI_HOME=/home/csharprunner" >> $GITHUB_ENV
 
       - name: Restore dependencies
         run: |
