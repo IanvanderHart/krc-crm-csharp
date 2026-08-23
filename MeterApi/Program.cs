@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using MeterApi.Data;
 //hello,new comment,else
-
+//
 //trigger comment
 //trigger comment else
-
+//and else comment
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
