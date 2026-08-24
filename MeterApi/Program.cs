@@ -1,10 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MeterApi.Data;
-//hello,new comment,else
-//
-//trigger comment
-//trigger comment else
-//and else comment
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -16,15 +12,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// Включаем Swagger для всех окружений (разработка и продакшен)
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-// rights fix
