@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -18,7 +17,7 @@ namespace MeterApi.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ReadingDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ReadingDate = table.Column<string>(type: "text", nullable: false),
                     Locality = table.Column<string>(type: "text", nullable: false),
                     Street = table.Column<string>(type: "text", nullable: true),
                     House = table.Column<string>(type: "text", nullable: false),

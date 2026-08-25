@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MeterApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260823055449_InitialCreate")]
+    [Migration("20260825092041_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -34,30 +34,39 @@ namespace MeterApi.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Apartment")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasAnnotation("Relational:JsonPropertyName", "apartment");
 
                     b.Property<decimal?>("GVS_Current")
-                        .HasColumnType("numeric");
+                        .HasColumnType("numeric")
+                        .HasAnnotation("Relational:JsonPropertyName", "gvsCurrent");
 
                     b.Property<string>("House")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasAnnotation("Relational:JsonPropertyName", "house");
 
                     b.Property<string>("Locality")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasAnnotation("Relational:JsonPropertyName", "locality");
 
                     b.Property<string>("Note")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasAnnotation("Relational:JsonPropertyName", "note");
 
-                    b.Property<DateTime>("ReadingDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("ReadingDate")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasAnnotation("Relational:JsonPropertyName", "readingDate");
 
                     b.Property<string>("Street")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasAnnotation("Relational:JsonPropertyName", "street");
 
                     b.Property<decimal>("XVS_Current")
-                        .HasColumnType("numeric");
+                        .HasColumnType("numeric")
+                        .HasAnnotation("Relational:JsonPropertyName", "xvsCurrent");
 
                     b.HasKey("Id");
 

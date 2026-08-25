@@ -29,7 +29,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 var app = builder.Build();
 
-// Включаем CORS
 app.UseCors("AllowAll");
 
 app.UseSwagger();

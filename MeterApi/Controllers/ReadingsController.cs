@@ -26,6 +26,7 @@ public class ReadingsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateReading([FromBody] Reading reading)
     {
+        Console.WriteLine($"Received: {System.Text.Json.JsonSerializer.Serialize(reading)}");
         if (!ModelState.IsValid) return BadRequest(ModelState);
         await _context.Readings.AddAsync(reading);
         await _context.SaveChangesAsync();
