@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MeterApi.Data;
 using MeterApi.Models;
+using System.Text.Json;
 
 namespace MeterApi.Controllers;
 
@@ -26,21 +27,41 @@ public class ReadingsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateReading([FromBody] Reading reading)
     {
-	try {
-        Console.WriteLine($"Received: {System.Text.Json.JsonSerializer.Serialize(reading)}");
-        if (!ModelState.IsValid) return BadRequest(ModelState);
+        try
+        {
+            // Логируем сырой JSON
+            var json = await new StreamReader(Request.Body).ReadToEndAsync();
+            Console.WriteLine($"Raw JSON: {json}");
 
-	Console.WriteLine($"Received: {System.Text.Json.JsonSerializer.Serialize(reading)}");
+            // Десериализуем вручную с нечувствительностью к регистру
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var readingFromJson = JsonSerializer.Deserialize<Reading>(json, options);
 
-        await _context.Readings.AddAsync(reading);
-        await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetReadings), new { id = reading.Id }, reading);
+            if (readingFromJson == null)
+            {
+                Console.WriteLine("Deserialization returned null");
+                return BadRequest("Invalid JSON");
+            }
+
+            Console.WriteLine($"Deserialized: {JsonSerializer.Serialize(readingFromJson)}");
+
+            if (!ModelState.IsValid)
+            {
+                Console.WriteLine("ModelState is invalid");
+                return BadRequest(ModelState);
+            }
+
+            await _context.Readings.AddAsync(readingFromJson);
+            await _context.SaveChangesAsync();
+
+            Console.WriteLine($"Saved successfully. Id: {readingFromJson.Id}");
+            return CreatedAtAction(nameof(GetReadings), new { id = readingFromJson.Id }, readingFromJson);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in CreateReading: {ex.Message}");
+            Console.WriteLine($"Stack trace: {ex.StackTrace}");
+            return StatusCode(500, new { error = ex.Message });
+        }
     }
-	catch (Exception ex)
-	{
-	    Console.WriteLine($"Error: {ex.Message}");
-	    throw;
-	}
-	}
 }
-
