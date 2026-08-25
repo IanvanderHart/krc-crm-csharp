@@ -21,10 +21,10 @@ public class Reading
     [JsonPropertyName("apartment")]
     public string? Apartment { get; set; }
 
-    [JsonPropertyName("xvsCurrent")]
+    [JsonPropertyName("xvS_Current")]
     public decimal XVS_Current { get; set; }
 
-    [JsonPropertyName("gvsCurrent")]
+    [JsonPropertyName("gvS_Current")]
     public decimal? GVS_Current { get; set; }
 
     [JsonPropertyName("note")]
