@@ -31,15 +31,27 @@ jobs:
           cd MeterApi
           dotnet publish -c Release -o ./publish --no-restore
 
-      - name: Deploy via SCP (copy files only)
+      - name: Fix permissions before deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            sudo chown -R bro:bro /home/csharp/app/MeterApi || true
+            sudo chmod -R 775 /home/csharp/app/MeterApi || true
+          request_pty: true
+          debug: true
+
+      - name: Deploy via SCP
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "MeterApi/publish/*"
+          source: "MeterApi/publish/"
           target: "/home/csharp/app/MeterApi"
-          strip_components: 2
+          strip_components: 1
           overwrite: true
           debug: true
           timeout: 120s
