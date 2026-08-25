@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/root/projects/krc-crm-csharp/MeterApi/MeterApi.csproj": {}
+    "/home/bro/projects/krc-crm-csharp/MeterApi/MeterApi.csproj": {}
   },
   "projects": {
-    "/root/projects/krc-crm-csharp/MeterApi/MeterApi.csproj": {
+    "/home/bro/projects/krc-crm-csharp/MeterApi/MeterApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/root/projects/krc-crm-csharp/MeterApi/MeterApi.csproj",
+        "projectUniqueName": "/home/bro/projects/krc-crm-csharp/MeterApi/MeterApi.csproj",
         "projectName": "MeterApi",
-        "projectPath": "/root/projects/krc-crm-csharp/MeterApi/MeterApi.csproj",
-        "packagesPath": "/root/.nuget/packages/",
-        "outputPath": "/root/projects/krc-crm-csharp/MeterApi/obj/",
+        "projectPath": "/home/bro/projects/krc-crm-csharp/MeterApi/MeterApi.csproj",
+        "packagesPath": "/home/bro/.nuget/packages/",
+        "outputPath": "/home/bro/projects/krc-crm-csharp/MeterApi/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/root/.nuget/NuGet/NuGet.Config"
+          "/home/bro/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
