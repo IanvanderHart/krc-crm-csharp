@@ -31,16 +31,26 @@ jobs:
           cd MeterApi
           dotnet publish -c Release -o ./publish --no-restore
 
-      - name: List publish folder (debug)
-        run: ls -la MeterApi/publish/
-
-      - name: Remove old files on server
+      - name: Stop service
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            sudo systemctl stop meterapi || true
+            sleep 2
+          request_pty: true
+          debug: true
+
+      - name: Prepare directory (chown and clean)
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            sudo chown -R bro:bro /home/csharp/app/MeterApi || true
             sudo rm -rf /home/csharp/app/MeterApi/*
           request_pty: true
           debug: true
@@ -66,7 +76,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             sudo chown -R csharp:csharp /home/csharp/app/MeterApi
-            sudo systemctl restart meterapi
+            sudo systemctl start meterapi
             sleep 2
             sudo systemctl status meterapi --no-pager
           request_pty: true
