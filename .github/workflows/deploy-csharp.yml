@@ -63,7 +63,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "MeterApi/publish/"
           target: "/home/csharp/app/MeterApi"
-          strip_components: 1
+          strip_components: 2
           overwrite: true
           debug: true
           timeout: 120s
