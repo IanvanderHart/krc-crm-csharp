@@ -21,9 +21,10 @@ jobs:
           echo "HOME=/home/csharprunner" >> $GITHUB_ENV
           echo "DOTNET_CLI_HOME=/home/csharprunner" >> $GITHUB_ENV
 
-      - name: Restore dependencies
+      - name: Clean and restore
         run: |
           cd MeterApi
+          dotnet clean
           dotnet restore --no-cache --force
 
       - name: Publish
