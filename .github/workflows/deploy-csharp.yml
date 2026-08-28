@@ -31,15 +31,17 @@ jobs:
           cd MeterApi
           dotnet publish -c Release -o ./publish --no-restore
 
-      - name: Fix permissions before deploy
+      - name: List publish folder (debug)
+        run: ls -la MeterApi/publish/
+
+      - name: Remove old files on server
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo chown -R bro:bro /home/csharp/app/MeterApi || true
-            sudo chmod -R 775 /home/csharp/app/MeterApi || true
+            sudo rm -rf /home/csharp/app/MeterApi/*
           request_pty: true
           debug: true
 
