@@ -25,41 +25,52 @@ public class ReadingsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateReading([FromBody] Reading reading)
+    public async Task<IActionResult> CreateReading()
     {
         try
         {
-            // Логируем сырой JSON
+            // Читаем сырой JSON из тела запроса
             var json = await new StreamReader(Request.Body).ReadToEndAsync();
             Console.WriteLine($"Raw JSON: {json}");
 
-            // Десериализуем вручную с нечувствительностью к регистру
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            var readingFromJson = JsonSerializer.Deserialize<Reading>(json, options);
-
-            if (readingFromJson == null)
+            if (string.IsNullOrWhiteSpace(json))
             {
-                Console.WriteLine("Deserialization returned null");
-                return BadRequest("Invalid JSON");
+                Console.WriteLine("Empty JSON received");
+                return BadRequest("Empty JSON");
             }
 
-            Console.WriteLine($"Deserialized: {JsonSerializer.Serialize(readingFromJson)}");
+            // Десериализуем вручную
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var reading = JsonSerializer.Deserialize<Reading>(json, options);
+
+            if (reading == null)
+            {
+                Console.WriteLine("Deserialization returned null");
+                return BadRequest("Invalid JSON structure");
+            }
+
+            Console.WriteLine($"Deserialized: {JsonSerializer.Serialize(reading)}");
 
             if (!ModelState.IsValid)
             {
-                Console.WriteLine("ModelState is invalid");
+                Console.WriteLine("ModelState invalid");
                 return BadRequest(ModelState);
             }
 
-            await _context.Readings.AddAsync(readingFromJson);
+            await _context.Readings.AddAsync(reading);
             await _context.SaveChangesAsync();
 
-            Console.WriteLine($"Saved successfully. Id: {readingFromJson.Id}");
-            return CreatedAtAction(nameof(GetReadings), new { id = readingFromJson.Id }, readingFromJson);
+            Console.WriteLine($"Saved successfully. Id: {reading.Id}");
+            return CreatedAtAction(nameof(GetReadings), new { id = reading.Id }, reading);
+        }
+        catch (JsonException ex)
+        {
+            Console.WriteLine($"JSON parse error: {ex.Message}");
+            return BadRequest(new { error = "Invalid JSON format", detail = ex.Message });
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error in CreateReading: {ex.Message}");
+            Console.WriteLine($"Error: {ex.Message}");
             Console.WriteLine($"Stack trace: {ex.StackTrace}");
             return StatusCode(500, new { error = ex.Message });
         }
